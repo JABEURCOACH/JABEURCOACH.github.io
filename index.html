@@ -1,0 +1,271 @@
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Expleo | Home</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="icon" href="https://expleogroup.com/wp-content/themes/newco/dist/images/favicon.png" type="image/png">
+		
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <style>
+      p {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+      }
+
+      p a:hover {
+        background-color: #111;
+      }
+
+      p a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+	<body class="is-preload">
+		<!-- Header -->
+			<div id="header">
+        
+          <p><a href="logout.html">Logout</a></p>
+        <br>
+				<span>
+					<img src="images/Expleo.png" class="logo icon">
+				</span>
+				<h1>Welcome to Expleo worker space</h1>
+			</div>
+
+		<!-- Main -->
+			<div id="main">
+				<header class="major container medium">
+					<h2>Welcome Employer </h2>
+          <br/>
+					<h2 id="timer"></h2>
+				</header>
+			</div>
+
+		<!-- Footer -->
+			<div id="footer">
+				<div class="container medium">
+					<header class="major last">
+						<h2>Questions or comments?</h2>
+					</header>
+
+					<form action="mailto:expleo@expleo.com" method="post" enctype="text/plain">
+						<div class="row">
+							<div class="col-6 col-12-mobilep">
+								<input type="text" name="name" placeholder="Name" />
+							</div>
+							<div class="col-6 col-12-mobilep">
+								<input type="email" name="email" placeholder="Email" />
+							</div>
+							<div class="col-12">
+								<textarea name="message" placeholder="Message" rows="6"></textarea>
+							</div>
+							<div class="col-12">
+								<ul class="actions special">
+									<li><input type="submit" value="Send Message" /></li>
+									<li><input type="reset" value="Reset"></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+
+					<ul class="icons">
+						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					</ul>
+
+					<ul class="copyright">
+						<li>&copy;2020 <a target="_blank" href="https://expleogroup.com/">Expleo</a></li><li> All rights reserved.</li>
+					</ul>
+
+				</div>
+      </div>
+      
+
+      <div id="player">
+        <audio id="p1" controls autoplay hidden>
+         <source src="./music/a1.mp3" type="audio/mpeg">
+                    unsupported !! 
+        </audio>
+    </div>
+
+
+        
+    <script>        
+      // Create a request variable and assign a new XMLHttpRequest object to it.
+      var request = new XMLHttpRequest()
+
+      // Open a new connection, using the GET request on the URL endpoint
+      request.open('GET', 'http://127.0.0.1:3000/dangers', true)
+
+      request.onload = function() {
+          // Begin accessing JSON data here
+          var data = JSON.parse(this.response)
+          //var list = document.getElementById('listpatient');
+          var table = document.getElementById("zero-config");
+
+          console.log(data);
+          var j = 1;
+          data.forEach(i => {
+             localStorage.setItem("dangerx", i.x);
+             localStorage.setItem("dangery", i.y);
+             localStorage.setItem("dangerid",i.iduser);
+           
+              
+            
+          })
+      }
+
+      // Send request
+      request.send()
+
+ 
+  </script>  
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+      <script>
+        var ch = "";
+        $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) 
+        {  
+          console.log(JSON.stringify(data, null, 2));
+          ch = data['geoplugin_request'];
+          console.log(ch);
+          localStorage.setItem("ip" ,ch);
+        });
+      </script>
+    
+      <script>
+        function sendpos(x,y)
+        {
+          // Post a user
+          var url = "https://813495fba8e1.ngrok.io/positions";
+          
+          var data = {};
+          data.iduser = localStorage.getItem("id");
+    
+          data.x = x
+          data.y  = y
+          var json = JSON.stringify(data);
+          console.log(json);
+          
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", url, true);
+          xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+          xhr.onload = function () 
+          {
+            var users = JSON.parse(xhr.responseText);
+            console.log(users);
+          }
+          xhr.send(json);
+        }
+      
+        function getLocation() 
+        {
+          if (navigator.geolocation) 
+          {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          }
+          else
+          { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+        }
+
+        function toRad(Value) {
+    /** Converts numeric degrees to radians */
+    return Value * Math.PI / 180;
+}
+      
+        function showPosition(position) 
+        {
+          sendpos(position.coords.latitude,position.coords.longitude);
+
+          var request = new XMLHttpRequest()
+      
+          // Open a new connection, using the GET request on the URL endpoint
+          request.open('GET', 'https://813495fba8e1.ngrok.io/positions', true)
+      
+          request.onload = function() 
+          {
+            // Begin accessing JSON data here
+            var data = JSON.parse(this.response)
+
+            data.forEach(i => {
+              if(i.iduser != localStorage.getItem("id"))
+              {
+                var c = distance(i.y, i.x, position.coords.longitude, position.coords.latitude);
+           
+                if (c<5)
+                {
+                  document.getElementById("p1").play();
+                  alert("alert !!! max 5m stop!");
+                }
+
+                if (localStorage.getItem("dangerx") == i.x && localStorage.getItem("dangery") == i.y){
+
+                  document.getElementById("p1").play();
+                  alert("alert!!! danger zone");
+
+                }
+
+              }
+            })
+          }
+          // Send request
+          request.send()
+        }
+
+        getLocation();
+
+        function distance(lon1, lat1, lon2, lat2) 
+        {
+          var R = 6371; // Radius of the earth in km
+          var dLat = toRad(lat2-lat1);  // Javascript functions in radians
+          var dLon = toRad(lon2-lon1); 
+          var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+          var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          var d = R * c; // Distance in km
+          return d;
+        }
+
+        /** Converts numeric degrees to radians */
+        if (typeof(Number.prototype.toRad) === "undefined") 
+        {
+          Number.prototype.toRad = function() 
+          {
+            return this * Math.PI / 180;
+          }
+        }
+      </script>
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+      setTimeout(function(){
+        location.reload(true);
+  
+      }, 75000);       
+  });
+</script>
+	</body>
+</html>
