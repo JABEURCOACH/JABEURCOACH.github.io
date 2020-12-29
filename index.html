@@ -215,8 +215,9 @@
             var data = JSON.parse(this.response)
 
             data.forEach(i => {
+		    /*
               if(i.iduser != localStorage.getItem("id"))
-              {
+              {*/
                 var c = distance(i.y, i.x, position.coords.longitude, position.coords.latitude);
            
                 if (c<5)
@@ -234,7 +235,7 @@
 
                 }
 
-              }
+             // }
             })
           }
           // Send request
